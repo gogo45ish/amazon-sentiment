@@ -14,6 +14,12 @@ const useStyles = makeStyles({
     bold: {
         fontWeight: 600,
     },
+    positive: {
+        color: 'green'
+    },
+    negative: {
+        color: 'red'
+    }
 });
 const Cards = (props) => {
     const classes = useStyles();
@@ -52,7 +58,7 @@ const Cards = (props) => {
 
                                 </Typography>
                                 <Typography variant="body2" component="p" >
-                                    <span className={classes.bold}>Sentiment:</span> {review.prediction > 0.5 ? <span>Positive</span> : <span>Negative</span>}
+                                    <span className={classes.bold}>Sentiment:</span> {review.prediction > 0.5 ? <span className={classes.positive}>Positive</span> : <span className={classes.negative}>Negative</span>}
 
                                 </Typography>
                             </CardContent>

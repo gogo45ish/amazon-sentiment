@@ -76,7 +76,7 @@ const ContactUs = () => {
                     id="outlined-multiline-static"
                     label="Message"
                     multiline
-                    rows={10}
+                    rows={5}
                     variant="outlined"
                     required
                 />

@@ -3,10 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
 
-    center: {
-        position: 'absolute', left: '50%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-    }
+
 }));
 const BarChart = (props) => {
 
@@ -66,9 +63,9 @@ const BarChart = (props) => {
                     }
                 }}
             />
-            <Typography align="center">Average Price: {avgPrice}</Typography>
-            <Typography align="center">Average Rating: {avgRating}</Typography>
-            <Typography align="center">Sold Units: {soldUnits}</Typography>
+            <Typography align="center">Average Price: {avgPrice}$</Typography>
+            <Typography align="center">Average Rating: {avgRating}/5⭐</Typography>
+            <Typography align="center">Sold Units: {soldUnits} unit</Typography>
 
         </div>
     );

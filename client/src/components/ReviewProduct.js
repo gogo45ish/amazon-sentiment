@@ -8,6 +8,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import { ReactComponent as Loading } from '../loading.svg';
 const useStyles = makeStyles((theme) => ({
+    content: {
+        marginTop: '30px',
+        width: "100%",
+        height: '100%'
+    },
     margin: {
         margin: theme.spacing(1),
     },
@@ -90,19 +95,16 @@ const Search = () => {
 
     const clickSearch = () => {
 
-        var url = '';
-        if (url !== '') {
-            url = 'http://localhost:5000/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
-            // var url = 'http://localhost:5000/api/test'
-            setUrl(url)
-        }
+        var url = 'http://localhost:5000/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
+        setUrl(url)
+
     }
 
 
 
     return (
 
-        <div>
+        <div className={classes.content}>
 
             <div className={classes.margin} >
                 <Grid container spacing={1} alignItems="flex-end">

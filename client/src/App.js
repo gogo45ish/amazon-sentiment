@@ -27,9 +27,6 @@ const App = () => {
       secondary: {
         main: '#191919'
       },
-      background: {
-        paper: '#f4f4f4'
-      }
     },
     typography: {
       fontFamily: 'Open Sans'

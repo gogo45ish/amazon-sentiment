@@ -11,6 +11,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Button, Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import { ReactComponent as Loading } from '../loading.svg';
 const useStyles = makeStyles((theme) => ({
+    content: {
+        marginTop: '30px',
+        width: "100%",
+        height: '100%'
+    },
     margin: {
         margin: theme.spacing(1),
     },
@@ -97,22 +102,17 @@ const Search = () => {
         setChartSelected(false);
     }
     const clickSearch = () => {
-        var url = 'http://localhost:5000/api/chart?keywords=' + keywords + '&country=' + country;
-        //var url = 'http://localhost:5000/api/test'
+        var url = 'http://localhost:5000/api/chart3?keywords=' + keywords + '&country=' + country;
+        // var url = 'http://localhost:5000/api/test'
         setUrl(url)
 
-        // if (url !== '') {
-        //     // var url = 'http://localhost:5000/api/chart?keywords=' + keywords + '&country=' + country;
-        //     var url = 'http://localhost:5000/api/test'
-        //     setUrl(url)
-        // }
     }
 
 
 
     return (
 
-        <div>
+        <div className={classes.content}>
             <div className={classes.margin}>
                 <Grid direction="row" container spacing={1} alignItems="flex-end">
 
