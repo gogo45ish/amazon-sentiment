@@ -36,7 +36,13 @@ export const Layout = ({ children }) => {
     const history = useHistory();
     const location = useLocation();
 
-    const handleLogout = () => { fire.auth().signOut() }
+    const handleLogout = () => {
+        fire.auth().signOut();
+        localStorage.removeItem('searchData');
+        localStorage.removeItem('reviewData');
+        localStorage.removeItem('asin');
+
+    }
 
     const menuItems = [
         {

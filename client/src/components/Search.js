@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import BarChart from './BarChart';
 import Alert from '@material-ui/lab/Alert';
 import TableResult from './TableResult';
+import TableSort from './TableSort';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import TableChartIcon from '@material-ui/icons/TableChart';
@@ -10,7 +11,10 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Button, Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import { ReactComponent as Loading } from '../loading.svg';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
+
     content: {
         marginTop: '30px',
         width: "100%",
@@ -28,7 +32,17 @@ const useStyles = makeStyles((theme) => ({
     center: {
         position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)'
-    }
+    },
+    message: {
+        position: 'absolute', left: '55%', top: '55%',
+        transform: 'translate(-50%, -50%)',
+        color: 'gray'
+    },
+
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 
@@ -45,11 +59,17 @@ const Search = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [chart, setChartSelected] = useState(true);
     const [table, setTableSelected] = useState(false);
+    const [message] = useState(true);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [open, setOpen] = useState(false);
 
 
 
+    useEffect(() => {
+        const dataStorage = window.localStorage.getItem('searchData');
+        setData(JSON.parse(dataStorage));
+    }, [])
 
 
 
@@ -63,13 +83,18 @@ const Search = () => {
 
 
                     if (!data.status) {
+                        window.localStorage.setItem('searchData', JSON.stringify(data))
                         setData(data);
                         setError(false);
-                        setIsLoading(false);
+                        // setIsLoading(false);
+                        setOpen(false);
+
                     } else {
                         setError(true);
                         setErrorMessage(data.message)
-                        setIsLoading(false);
+                        // setIsLoading(false);
+                        setOpen(false);
+
                     }
                 })
                 .catch(error => {
@@ -105,6 +130,13 @@ const Search = () => {
         var url = 'http://localhost:5000/api/chart3?keywords=' + keywords + '&country=' + country;
         // var url = 'http://localhost:5000/api/test'
         setUrl(url)
+        setOpen(!open);
+
+        window.localStorage.setItem('keywords', keywords)
+
+
+
+
 
     }
 
@@ -135,14 +167,14 @@ const Search = () => {
                             label="Search..." />
                     </Grid>
                     <Grid item>
-                        <FormControl className={classes.formControl}>
+                        <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel color="primary" id="demo-simple-select-label">Country</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                variant="outlined"
                                 value={country}
                                 onChange={handleCountry}
+                                label="Country"
                             >
                                 <MenuItem value={"US"}>United States</MenuItem>
                                 <MenuItem value={"AU"}>Australia</MenuItem>
@@ -165,19 +197,29 @@ const Search = () => {
                 Table Results
             </Button>
 
-            {isLoading &&
+            {/* {isLoading &&
                 <Typography align="center"> Please wait while we fetch for results
                     <Loading />
                 </Typography>
+            } */}
+            <Backdrop className={classes.backdrop} open={open}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
+            {!data && message &&
+
+                <Typography className={classes.message} variant='h5'>Start Searching for products!</Typography>
+
             }
-            {data && chart && <div style={{ height: "100%", width: "100%" }}><BarChart data={data} /></div>}
-            {data && table && <TableResult data={data} />}
+            {data && chart && <div><BarChart data={data} /></div>}
+            {/* { data && table && <TableResult data={data} />} */}
+            { data && table && <TableSort data={data} />}
 
 
 
 
 
-        </div>
+        </div >
 
     );
 }

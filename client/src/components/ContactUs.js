@@ -5,18 +5,17 @@ import emailjs from 'emailjs-com'
 const useStyles = makeStyles({
     content: {
         marginTop: "50px",
-        paddingBottom: "100%"
     },
     contact: {
         marginBottom: '40px'
     },
     form: {
-        paddingLeft: "200px",
-        paddingRight: "200px"
+        paddingLeft: "300px",
+        paddingRight: "300px"
     },
     input: {
         marginBottom: '10px'
-    }
+    },
 });
 
 const ContactUs = () => {

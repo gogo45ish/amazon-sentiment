@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
     table: {
@@ -19,9 +20,15 @@ const useStyles = makeStyles({
 
 const TableResult = (props) => {
     const classes = useStyles();
+    const history = useHistory();
 
 
     const products = props.data.products;
+
+    const reviewAsin = (asin) => {
+        history.push('/review')
+        window.localStorage.setItem('asin', asin);
+    }
 
 
     return (
@@ -89,7 +96,9 @@ const TableResult = (props) => {
                             <TableCell component="th" scope="row">
                                 {product.title}
                             </TableCell>
-                            <TableCell align="right">{product.asin}</TableCell>
+                            <TableCell align="right"><button type='button' onClick={() => {
+                                reviewAsin(product.asin)
+                            }}>{product.asin}</button></TableCell>
                             <TableCell align="right">{product.price.current_price}</TableCell>
                             <TableCell align="right">{product.reviews.rating}</TableCell>
                             <TableCell align="right">{product.reviews.total_reviews}</TableCell>
@@ -97,7 +106,11 @@ const TableResult = (props) => {
                             <TableCell align="right">{product.amazonPrime ? (<Typography>Yes</Typography>) : (<Typography>No</Typography>)}</TableCell>
                             <TableCell align="right">{product.BestSeller ? (<Typography>Yes</Typography>) : (<Typography>No</Typography>)}</TableCell>
                             <TableCell align="right">{product.sponsored ? (<Typography>Yes</Typography>) : (<Typography>No</Typography>)}</TableCell>
-                            <TableCell align="right"><img src={product.thumbnail} alt="" width="50" height="80" /></TableCell>
+                            <TableCell align="right">
+                                <a href={product.url} rel="noopener noreferrer" target="_blank">
+                                    <img src={product.thumbnail} alt="" width="50" height="80" />
+                                </a>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -7,7 +7,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import { ReactComponent as Loading } from '../loading.svg';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
+
     content: {
         marginTop: '30px',
         width: "100%",
@@ -26,13 +29,24 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+
+    message: {
+        position: 'absolute', left: '55%', top: '55%',
+        transform: 'translate(-50%, -50%)',
+        color: 'gray'
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 
 
-const Search = () => {
+const ReviewProduct = () => {
 
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
 
 
     const [data, setData] = useState(null);
@@ -43,10 +57,18 @@ const Search = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [message] = useState(true);
 
 
 
 
+
+    useEffect(() => {
+        const reviewStorage = window.localStorage.getItem('reviewData');
+        const asin = window.localStorage.getItem('asin');
+        setAsin(asin)
+        setData(JSON.parse(reviewStorage));
+    }, []);
 
 
     useEffect(() => {
@@ -59,13 +81,16 @@ const Search = () => {
 
 
                     if (!data.status) {
+                        window.localStorage.setItem('reviewData', JSON.stringify(data));
                         setData(data);
                         setError(false);
-                        setIsLoading(false);
+                        // setIsLoading(false);
+                        setOpen(false);
                     } else {
                         setError(true);
                         setErrorMessage(data.message)
-                        setIsLoading(false);
+                        // setIsLoading(false);
+                        setOpen(false);
                     }
                 })
                 .catch(error => {
@@ -96,7 +121,9 @@ const Search = () => {
     const clickSearch = () => {
 
         var url = 'http://localhost:5000/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
-        setUrl(url)
+        setUrl(url);
+        window.localStorage.removeItem('asin')
+        setOpen(!open);
 
     }
 
@@ -168,11 +195,19 @@ const Search = () => {
 
             {error && <Alert variant="outlined" severity="error" onClose={() => { setError(false) }}>{errorMessage}</Alert>}
 
-            {isLoading &&
+            {/* {isLoading &&
                 <Typography align="center">Please wait while we fetch for results
             <Loading />
                 </Typography>
 
+
+            } */}
+            <Backdrop className={classes.backdrop} open={open}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {!data && message &&
+
+                <Typography className={classes.message} variant='h5'>Start Searching for products!</Typography>
 
             }
             {data && <Cards data={data} />}
@@ -184,4 +219,4 @@ const Search = () => {
     );
 }
 
-export default Search;
+export default ReviewProduct;

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import fire from "./fire.js";
 import { makeStyles } from '@material-ui/core/styles';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { ReactComponent as Loading } from './loading.svg';
 
@@ -8,7 +10,12 @@ const useStyles = makeStyles((theme) => ({
     center: {
         position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)'
-    }
+    },
+
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 
@@ -27,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     if (pending) {
-        return <Loading className={classes.center} />
+        return <Backdrop className={classes.backdrop} open={pending}><CircularProgress color="inherit" /></Backdrop>
     }
 
     return (

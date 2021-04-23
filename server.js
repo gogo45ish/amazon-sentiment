@@ -22,35 +22,59 @@ function pad_array(arr, len, fill) {                        // Padding Array
     return arr.concat(Array(len).fill(fill)).slice(0, len);
 
 }
-async function collectReviews(products) {
+// async function collectReviews(products, country) {
+//     console.log('COLLECTING REVIEWS ***********************************')
+//     var reviews = [];
+//     var counter = 0;
+
+//     for (var product of products) {
+//         counter++;
+
+//         console.log("***********************")
+//         console.log(counter);
+//         console.log(product.title)
+//         console.log(product.asin)
+//         console.log("***********************")
+//         const options = {
+//             method: 'GET',
+//             url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/reviews',
+//             params: { asin: product.asin, country: country, variants: '1', top: '0' },
+//             headers: {
+//                 'x-rapidapi-key': rapidkey,
+//                 'x-rapidapi-host': rapidhost
+//             }
+//         };
+
+//         var reviewsResponse = await axios.request(options)
+//         var reviewsArray = reviewsResponse.data.reviews
+//         // console.log(reviewsResponse.data.reviews)
+//         for (var review of reviewsArray) {
+//             // var text = review.text;
+//             var text = review.review;
+//             console.log(text)
+//             // var trim = text.trim();
+//             var removedEmojis = emojiStrip(text)
+//             reviews.push(removedEmojis)
+//         }
+
+//     }
+
+//     return reviews;
+// }
+async function getReviews(product, country) {
     console.log('COLLECTING REVIEWS ***********************************')
     var reviews = [];
     var counter = 0;
-    for (var product of products) {
-        counter++;
 
-        console.log("***********************")
-        console.log(counter);
-        console.log(product.title)
-        console.log(product.asin)
-        console.log("***********************")
-
-        var reviewsResponse = await reviewsCrawler(product.asin);
-        for (var review of reviewsResponse.reviews) {
-            var text = review.text;
-            var trim = text.trim();
-            var removedEmojis = emojiStrip(trim)
-            reviews.push(removedEmojis)
+    const options = {
+        method: 'GET',
+        url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/reviews',
+        params: { asin: product.asin, country: country, variants: '1', top: '0' },
+        headers: {
+            'x-rapidapi-key': rapidkey,
+            'x-rapidapi-host': rapidhost
         }
-
-    }
-
-    return reviews;
-}
-async function getReviews(product) {
-    console.log('COLLECTING REVIEWS ***********************************')
-    var reviews = [];
-    var counter = 0;
+    };
 
 
     console.log("***********************")
@@ -59,13 +83,27 @@ async function getReviews(product) {
     console.log(product.asin)
     console.log("***********************")
 
-    var reviewsResponse = await reviewsCrawler(product.asin);
-    for (var review of reviewsResponse.reviews) {
-        var text = review.text;
-        var trim = text.trim();
-        var removedEmojis = emojiStrip(trim)
-        reviews.push(removedEmojis)
+
+
+    try {
+        var reviewsResponse = await axios.request(options)
+        console.log(reviewsResponse)
+        var reviewsArray = reviewsResponse.data.reviews
+        // console.log(reviewsResponse.data.reviews)
+        for (var review of reviewsArray) {
+            // var text = review.text;
+            var text = review.review;
+            // console.log(text)
+            // var trim = text.trim();
+            var removedEmojis = emojiStrip(text)
+            reviews.push(removedEmojis)
+        }
+
+    } catch (error) {
+
     }
+
+
 
 
 
@@ -136,101 +174,6 @@ async function predict2(reviews) {                              // Predict Text
 
     return reviews
 }
-
-
-app.get('/api/chart', cors(), asyncHandler(async (req, res) => {
-
-    var keywords = req.query.keywords;
-    var country = req.query.country;
-    console.log(keywords)
-    console.log(country)
-
-    var search = {
-        method: 'GET',
-        url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/search',
-        params: { keyword: keywords, country: country, category: 'aps' },
-        headers: {
-            'x-rapidapi-key': rapidkey,
-            'x-rapidapi-host': rapidhost,
-        }
-    };
-
-    axios.request(search).then(async function (result) {
-        // if (result.error) throw new Error(result.error);
-        var products = result.data.products;
-        var asin = "";
-        var text = '';
-        var texts = [];
-        var trim;
-        var removedEmojis;
-        var priceCounter = 0;
-        var ratingCounter = 0;
-        var reviewCounter = 0;
-        var counter = 0;
-        for (var product of products) {
-            counter++
-            console.log('****************');
-            console.log(counter);
-            console.log('****************');
-
-            console.log(product.title)
-            asin = product.asin;
-            priceCounter += Number(product.price.current_price);
-            console.log(priceCounter);
-            ratingCounter += product.reviews.rating;
-            console.log(ratingCounter)
-
-            reviewCounter += product.reviews.total_reviews;
-            console.log(reviewCounter)
-
-            product.pricee = parseInt(product.price.current_price);
-            product.rate = product.reviews.rating;
-
-            reviewsResponse = await reviewsCrawler(asin);
-            for (var review of reviewsResponse.reviews) {
-                text = review.text
-                trim = text.trim();
-                removedEmojis = emojiStrip(trim)
-                // console.log(removedEmojis)
-                texts.push(removedEmojis)
-            }
-        }
-
-        var avgPrice = priceCounter / products.length;
-        var avgRating = ratingCounter / products.length;
-        var soldUnits = reviewCounter / 0.06;
-
-        try {
-            predictions = await predict(texts);
-        } catch (error) {
-            console.log(error);
-        }
-
-        //console.log(result.body.products);
-
-        var response = {
-            products: result.data.products,
-            predictions: predictions,
-            avgPrice: Math.round(avgPrice),
-            avgRating: Math.round(avgRating),
-            soldUnits: Math.round(soldUnits),
-            error: false
-        };
-
-        res.send(response);
-
-    }).catch(function (error) {
-        var response = {
-            status: true,
-            message: error.response.data.message,
-
-        };
-        console.error(error.response.status);
-        res.send(response);
-    });
-
-
-}));
 app.get('/api/test', cors(), asyncHandler(async (req, res) => {
 
 
@@ -251,8 +194,11 @@ app.get('/api/test', cors(), asyncHandler(async (req, res) => {
                 amazonPrime: true,
                 bestSeller: false,
                 sponsored: false,
-                thumbnail: "https://m.media-amazon.com/images/I/810DvHOZ9nL._AC_UL320_.jpg"
-            }
+                thumbnail: "https://m.media-amazon.com/images/I/810DvHOZ9nL._AC_UL320_.jpg",
+                pricee: "399.9",
+                rate: 4.6,
+                totalReviews: 100
+            },
 
         ],
         predictions: [100, 50],
@@ -313,115 +259,20 @@ app.get('/api/reviewProduct', cors(), asyncHandler(async (req, res) => {
 
     }).catch(function (error) {
         console.error(error);
-        var response = {
-            status: true,
-            message: error.response.data.message,
+        if (error.response.status == 504) {
+            var response = {
+                status: true,
+                message: error.response.data.messages,
 
-        };
-        console.error(error.response.status);
+            };
+        } else {
+            var response = {
+                status: true,
+                message: error.response.data.message,
+
+            };
+        }
         res.send(response);
-    });
-
-
-}));
-
-
-app.get('/api/chart2', cors(), asyncHandler(async (req, res) => {
-
-    var keywords = req.query.keywords;
-    var country = req.query.country;
-    console.log(keywords)
-    console.log(country)
-
-    var search = {
-        method: 'GET',
-        url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/search',
-        params: { keyword: keywords, country: country, category: 'aps' },
-        headers: {
-            'x-rapidapi-key': rapidkey,
-            'x-rapidapi-host': rapidhost,
-        }
-    };
-
-    axios.request(search).then(async function (result) {
-        var products = result.data.products;
-        console.log('************')
-        console.log(products.length)
-        console.log('************')
-
-        var priceCounter = 0;
-        var ratingCounter = 0;
-        var reviewCounter = 0;
-        var counter = 0;
-
-        for (var product of products) {
-            counter++
-            console.log('****************');
-            console.log(counter);
-            console.log('****************');
-
-            console.log(product.title)
-            asin = product.asin;
-            priceCounter += Number(product.price.current_price);
-            console.log(priceCounter);
-            ratingCounter += product.reviews.rating;
-            console.log(ratingCounter)
-
-            reviewCounter += product.reviews.total_reviews;
-            console.log(reviewCounter)
-
-            product.pricee = parseInt(product.price.current_price);
-            product.rate = product.reviews.rating;
-
-
-        }
-
-        var avgPrice = priceCounter / products.length;
-        var avgRating = ratingCounter / products.length;
-        var soldUnits = reviewCounter / 0.06;
-
-        // var array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-        var half_length = Math.ceil(products.length / 2);
-        console.log(half_length)
-
-        var array1 = products.slice(0, half_length);
-        var array2 = products.slice(half_length, products.length);
-
-
-        var [result1, result2] = await Promise.all([collectReviews(array1), collectReviews(array2)]);
-
-        console.log('************COLLECTING REVIEWS DONE**************')
-
-        var texts = result1.concat(result2);
-
-        try {
-            predictions = await predict(texts);
-        } catch (error) {
-            console.log(error);
-        }
-
-        var response = {
-            products: result.data.products,
-            predictions: predictions,
-            avgPrice: Math.round(avgPrice),
-            avgRating: Math.round(avgRating),
-            soldUnits: Math.round(soldUnits),
-            error: false
-        };
-
-
-
-        res.send(response);
-
-    }).catch(function (error) {
-        // var response = {
-        //     status: true,
-        //     message: error.response.data.message,
-
-        // };
-        // console.error(error.response.status);
-        res.send(error);
     });
 
 
@@ -473,6 +324,8 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
 
             product.pricee = parseInt(product.price.current_price);
             product.rate = product.reviews.rating;
+            product.totalReviews = product.reviews.total_reviews;
+
 
 
         }
@@ -481,33 +334,38 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
         var avgRating = ratingCounter / products.length;
         var soldUnits = reviewCounter / 0.06;
 
-        // var array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
         // var half_length = Math.ceil(products.length / 2);
         // console.log(half_length)
 
         // var array1 = products.slice(0, half_length);
         // var array2 = products.slice(half_length, products.length);
 
-
-        // var [result1, result2] = await Promise.all([collectReviews(array1), collectReviews(array2)]);
-
-        // console.log('************COLLECTING REVIEWS DONE**************')
-
-        // var texts = result1.concat(result2);
-
-
+        const promises = products.map(
+            function (x) { return getReviews(x, country) }
+        );
+        // const promises1 = array1.map(
+        //     function (x) { return getReviews(x, country) }
+        // );
 
 
-
-        const promises = products.map(getReviews);
+        // const promises2 = array2.map(
+        //     function (x) { return getReviews(x, country) }
+        // );
 
         var reviews = await Promise.all(promises);
+        // var reviews1 = await Promise.all(promises1);
+        // var reviews2 = await Promise.all(promises2);
         var texts = []
 
         for (var array of reviews) {
             texts = texts.concat(array)
         }
+        // for (var array of reviews1) {
+        //     texts = texts.concat(array)
+        // }
+        // for (var array of reviews2) {
+        //     texts = texts.concat(array)
+        // }
         try {
             predictions = await predict(texts);
         } catch (error) {
@@ -525,13 +383,23 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
         res.send(response);
 
     }).catch(function (error) {
-        // var response = {
-        //     status: true,
-        //     message: error.response.data.message,
 
-        // };
-        // console.error(error.response.status);
-        res.send(error);
+        if (error.response.status == 504) {
+            var response = {
+                status: true,
+                message: error.response.data.messages,
+
+            };
+        } else {
+            var response = {
+                status: true,
+                message: error.response.data.message,
+
+            };
+        }
+
+        console.error(error.response.status);
+        res.send(response);
     });
 
 

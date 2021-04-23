@@ -4,6 +4,10 @@ import { Typography } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
 
 
+    center: {
+        position: 'absolute', left: '57%', top: '60%',
+        transform: 'translate(-50%, -50%)'
+    },
 }));
 const BarChart = (props) => {
 
@@ -16,12 +20,15 @@ const BarChart = (props) => {
     const avgPrice = props.data.avgPrice;
     const avgRating = props.data.avgRating;
     const soldUnits = props.data.soldUnits;
+    const keywords = window.localStorage.getItem('keywords');
+
 
 
 
     return (
         <div
             className={classes.center}>
+            <Typography align='center'>Last Search: {keywords}</Typography>
             <Bar
                 data={{
                     labels: ['Positive', 'Negative'],
@@ -42,8 +49,8 @@ const BarChart = (props) => {
                         }
                     ]
                 }}
-                height={200}
-                width={400}
+                height={500}
+                width={1000}
                 options={{
                     // maintainAspectRatio: false,
                     responsive: true,
