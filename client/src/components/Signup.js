@@ -114,6 +114,7 @@ const SignUp = ({ history }) => {
 
                     </Grid>
                     <Button
+                        id='signupB'
                         type="submit"
                         fullWidth
                         variant="contained"

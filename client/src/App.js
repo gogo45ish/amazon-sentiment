@@ -20,6 +20,7 @@ import ContactUs from './components/ContactUs';
 const App = () => {
 
   const theme = createMuiTheme({
+
     palette: {
       primary: {
         main: '#FF785A'
@@ -34,25 +35,27 @@ const App = () => {
   })
 
   return (
-    <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Router>
-          <div>
-            <Switch>
-              <PrivateRoute exact path="/" component={Search} layout={Layout} />
-              <PrivateRoute exact path="/review" component={ReviewProduct} layout={Layout} />
-              <PrivateRoute exact path="/about" component={About} layout={Layout} />
-              <PrivateRoute exact path="/contact" component={ContactUs} layout={Layout} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/forgot" component={Forgot} />
-              <Route path="/404" component={NotFound} />
-              <Redirect to="/404" />
-            </Switch>
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <div>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <Router>
+            <div>
+              <Switch>
+                <PrivateRoute exact path="/" component={Search} layout={Layout} />
+                <PrivateRoute exact path="/review" component={ReviewProduct} layout={Layout} />
+                <PrivateRoute exact path="/about" component={About} layout={Layout} />
+                <PrivateRoute exact path="/contact" component={ContactUs} layout={Layout} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={SignUp} />
+                <Route exact path="/forgot" component={Forgot} />
+                <Route path="/404" component={NotFound} />
+                <Redirect to="/404" />
+              </Switch>
+            </div>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 

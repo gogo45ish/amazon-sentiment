@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
-import { ReactComponent as Loading } from '../loading.svg';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +53,6 @@ const ReviewProduct = () => {
     const [country, setCountry] = useState('AU');
     const [top, setTop] = useState('0');
     const [url, setUrl] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [message] = useState(true);
@@ -66,14 +64,15 @@ const ReviewProduct = () => {
     useEffect(() => {
         const reviewStorage = window.localStorage.getItem('reviewData');
         const asin = window.localStorage.getItem('asin');
+        const country = window.localStorage.getItem('country');
         setAsin(asin)
+        setCountry(country)
         setData(JSON.parse(reviewStorage));
     }, []);
 
 
     useEffect(() => {
         const fetchData = () => {
-            setIsLoading(true);
             fetch(url).then(res => {
                 return res.json();
             })
@@ -141,7 +140,7 @@ const ReviewProduct = () => {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment>
-                                        <IconButton size="small" color="primary" disabled={!asin} onClick={clickSearch}>
+                                        <IconButton id="searchI" size="small" color="primary" disabled={!asin} onClick={clickSearch}>
                                             <SearchIcon />
                                         </IconButton>
                                     </InputAdornment>
@@ -151,16 +150,17 @@ const ReviewProduct = () => {
                             variant="outlined"
                             value={asin}
                             onChange={handleAsin}
-                            id="input-with-icon-grid"
-                            label="Search..." />
+                            label="Search..."
+                            id="searchB" />
                     </Grid>
                     <Grid item>
-                        <FormControl>
+                        <FormControl variant="outlined">
                             <InputLabel id="demo-simple-select-label">Country</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 variant="outlined"
+                                label="Country"
                                 value={country}
                                 onChange={handleCountry}
                             >
@@ -176,13 +176,14 @@ const ReviewProduct = () => {
                         </FormControl>
                     </Grid>
                     <Grid item>
-                        <FormControl>
+                        <FormControl variant="outlined">
                             <InputLabel id="demo-simple-select-label">Relevancy</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 variant="outlined"
                                 value={top}
+                                label="Relevancy"
                                 onChange={handleTop}
                             >
                                 <MenuItem value={"0"}>Most Recent</MenuItem>
@@ -195,13 +196,6 @@ const ReviewProduct = () => {
 
             {error && <Alert variant="outlined" severity="error" onClose={() => { setError(false) }}>{errorMessage}</Alert>}
 
-            {/* {isLoading &&
-                <Typography align="center">Please wait while we fetch for results
-            <Loading />
-                </Typography>
-
-
-            } */}
             <Backdrop className={classes.backdrop} open={open}>
                 <CircularProgress color="inherit" />
             </Backdrop>

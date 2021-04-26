@@ -149,6 +149,7 @@ const Login = ({ history }) => {
                     />
 
                     <Button
+                        id='loginB'
                         type="submit"
                         fullWidth
                         variant="contained"

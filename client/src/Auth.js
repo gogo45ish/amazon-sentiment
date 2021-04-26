@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { ReactComponent as Loading } from './loading.svg';
 
 const useStyles = makeStyles((theme) => ({
     center: {

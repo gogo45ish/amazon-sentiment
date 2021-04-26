@@ -21,6 +21,7 @@ const BarChart = (props) => {
     const avgRating = props.data.avgRating;
     const soldUnits = props.data.soldUnits;
     const keywords = window.localStorage.getItem('keywords');
+    const countrySearched = window.localStorage.getItem('countrySearched');
 
 
 
@@ -28,7 +29,7 @@ const BarChart = (props) => {
     return (
         <div
             className={classes.center}>
-            <Typography align='center'>Last Search: {keywords}</Typography>
+            <Typography align='center'>Last Search: "{keywords}" in {countrySearched}</Typography>
             <Bar
                 data={{
                     labels: ['Positive', 'Negative'],

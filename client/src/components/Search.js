@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import BarChart from './BarChart';
 import Alert from '@material-ui/lab/Alert';
-import TableResult from './TableResult';
 import TableSort from './TableSort';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -10,7 +9,6 @@ import TableChartIcon from '@material-ui/icons/TableChart';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Button, Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
-import { ReactComponent as Loading } from '../loading.svg';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +54,6 @@ const Search = () => {
     const [keywords, setKeywords] = useState('');
     const [country, setCountry] = useState('AU');
     const [url, setUrl] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [chart, setChartSelected] = useState(true);
     const [table, setTableSelected] = useState(false);
     const [message] = useState(true);
@@ -75,7 +72,6 @@ const Search = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            setIsLoading(true);
             fetch(url).then(res => {
                 return res.json();
             })
@@ -86,13 +82,11 @@ const Search = () => {
                         window.localStorage.setItem('searchData', JSON.stringify(data))
                         setData(data);
                         setError(false);
-                        // setIsLoading(false);
                         setOpen(false);
 
                     } else {
                         setError(true);
                         setErrorMessage(data.message)
-                        // setIsLoading(false);
                         setOpen(false);
 
                     }
@@ -133,6 +127,8 @@ const Search = () => {
         setOpen(!open);
 
         window.localStorage.setItem('keywords', keywords)
+        window.localStorage.setItem('countrySearched', country)
+
 
 
 
@@ -153,7 +149,7 @@ const Search = () => {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment>
-                                        <IconButton size="small" color="primary" disabled={!keywords} onClick={clickSearch}>
+                                        <IconButton id="searchI" size="small" color="primary" disabled={!keywords} onClick={clickSearch}>
                                             <SearchIcon />
                                         </IconButton>
                                     </InputAdornment>
@@ -163,8 +159,9 @@ const Search = () => {
                             variant="outlined"
                             value={keywords}
                             onChange={handleKeywords}
-                            id="input-with-icon-grid"
-                            label="Search..." />
+                            label="Search..."
+                            id="searchT"
+                        />
                     </Grid>
                     <Grid item>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -197,11 +194,7 @@ const Search = () => {
                 Table Results
             </Button>
 
-            {/* {isLoading &&
-                <Typography align="center"> Please wait while we fetch for results
-                    <Loading />
-                </Typography>
-            } */}
+
             <Backdrop className={classes.backdrop} open={open}>
                 <CircularProgress color="inherit" />
             </Backdrop>
@@ -213,7 +206,7 @@ const Search = () => {
             }
             {data && chart && <div><BarChart data={data} /></div>}
             {/* { data && table && <TableResult data={data} />} */}
-            { data && table && <TableSort data={data} />}
+            { data && table && <TableSort data={data} country={country} />}
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -101,25 +101,7 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-    root: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-    },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
-            },
-    title: {
-        flex: '1 1 100%',
-    },
-}));
+
 
 
 
@@ -152,11 +134,12 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(props) {
     const history = useHistory();
     const products = props.data.products;
+    const country = props.country;
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('asin');
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
+    const [dense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleRequestSort = (event, property) => {
@@ -176,9 +159,10 @@ export default function EnhancedTable(props) {
         setPage(0);
     };
 
-    const reviewAsin = (asin) => {
+    const reviewAsin = (asin, country) => {
         history.push('/review')
         window.localStorage.setItem('asin', asin);
+        window.localStorage.setItem('country', country);
     }
 
 
@@ -221,7 +205,7 @@ export default function EnhancedTable(props) {
                                             </TableCell>
                                             <TableCell align="right">
                                                 <Button variant="contained" color="secondary" onClick={() => {
-                                                    reviewAsin(row.asin)
+                                                    reviewAsin(row.asin, country)
                                                 }}>
                                                     {row.asin}
                                                 </Button>
