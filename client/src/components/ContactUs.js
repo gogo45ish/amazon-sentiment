@@ -76,7 +76,7 @@ const ContactUs = () => {
                     label="Email"
                     variant="outlined"
                     value={email}
-                    disabled
+
                     required />
                 <TextField
                     className={classes.input}
