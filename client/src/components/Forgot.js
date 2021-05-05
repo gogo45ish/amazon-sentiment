@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    logo: {
+        marginBottom: '30px'
+    }
 }));
 
 const Forgot = ({ history }) => {
@@ -58,12 +61,12 @@ const Forgot = ({ history }) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                <div className={classes.logo}>
+                    <img src="/images/Amazon Sentiment.png" height="50" />
+                </div>
                 <Typography component="h1" variant="h5">
                     Forgot Password
-        </Typography>
+                </Typography>
                 <form onSubmit={handleForgot} className={classes.form} noValidate>
                     <TextField
                         variant="outlined"

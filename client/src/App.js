@@ -16,6 +16,7 @@ import Forgot from "./components/Forgot";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 import About from './components/About';
 import ContactUs from './components/ContactUs';
+import Verify from './components/Verify';
 
 const App = () => {
 
@@ -48,6 +49,7 @@ const App = () => {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/forgot" component={Forgot} />
+                <Route exact path="/verify" component={Verify} />
                 <Route path="/404" component={NotFound} />
                 <Redirect to="/404" />
               </Switch>

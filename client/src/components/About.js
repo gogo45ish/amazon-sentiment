@@ -17,12 +17,45 @@ const useStyles = makeStyles((theme) => ({
     },
     about: {
         margin: "60px",
-        fontWeight: 600
+
+        [theme.breakpoints.down("xs")]: {
+            fontWeight: 200
+        },
+        [theme.breakpoints.up("sm")]: {
+            fontWeight: 400
+        },
+        [theme.breakpoints.up("md")]: {
+            fontWeight: 500
+        },
+        [theme.breakpoints.up("lg")]: {
+            fontWeight: 600
+        },
     },
     paragraph: {
         paddingTop: "5px",
-        paddingLeft: "150px",
-        paddingRight: "150px"
+        [theme.breakpoints.down("xs")]: {
+            paddingLeft: "50px",
+            paddingRight: "50px",
+        },
+        [theme.breakpoints.up("sm")]: {
+            paddingLeft: "50px",
+            paddingRight: "50px",
+        },
+        [theme.breakpoints.up("md")]: {
+            paddingLeft: "100px",
+            fontSize: 20,
+            paddingRight: "100px",
+        },
+        [theme.breakpoints.up("lg")]: {
+            paddingLeft: "150px",
+            paddingRight: "150px",
+            fontSize: 20,
+        },
+        [theme.breakpoints.up("xl")]: {
+            paddingLeft: "350px",
+            paddingRight: "350px",
+        },
+
     },
     large: {
         width: theme.spacing(30),
@@ -42,21 +75,24 @@ const About = () => {
             <Typography className={classes.about} variant='h2' align='center'>
                 About This Website
             </Typography>
+
+
             <Typography className={classes.paragraph} variant='body1'>
                 This Website is intended to help businesses learn from Amazon market and come up with
                 their strategy of how to make a product better from the listed ones and define whats the best price by providing
-                the seller average price,average rating,and lifetime sold units of related products.
+                the seller average price, average rating and lifetime sold units of related products.
                 The website uses machine learning to get actual sentiments of the reviews to give overall sentiment of
                 searched product based on keywords. This helps the seller with saving his time not reading reviews of each
-                product one by one. "Review Product" feature is used to searched reviews for specific product by providing its
-                asin number. With that, machine learning is used also to give sentiments of these reviews.
-            </Typography>
+                product one by one. "Review Product" feature is used to search reviews for specific product by providing its
+                asin number. With that, machine learning is also used to give sentiments of these reviews.
+                </Typography>
+
             <Typography className={classes.about} variant='h2' align='center'>
                 Developers
             </Typography>
             <div className={classes.root}>
                 <Grid container spacing={3} justify='center'>
-                    <Grid item xs={12} sm={8} md={4}>
+                    <Grid item xs={12} sm={8} md={4} >
                         {/* <Grid item >
                             <Avatar alt="George Zummar" src="/images/george1.png" className={classes.large} />
                         </Grid>
@@ -69,7 +105,7 @@ const About = () => {
                         </div>
 
                     </Grid>
-                    <Grid item xs={12} sm={8} md={4} lg={3}>
+                    <Grid item xs={12} sm={8} md={4} lg={3} xl={2}>
                         {/* <Grid item >
                             <Avatar alt="George Alatrash" src="/images/george2.jpg" className={classes.large} />
                         </Grid>

@@ -27,10 +27,6 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
-    center: {
-        position: 'absolute', left: '50%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-    },
     message: {
         position: 'absolute', left: '55%', top: '55%',
         transform: 'translate(-50%, -50%)',
@@ -155,6 +151,7 @@ const Search = () => {
                                     </InputAdornment>
                                 )
                             }}
+                            fullWidth
                             color="primary"
                             variant="outlined"
                             value={keywords}
@@ -187,12 +184,14 @@ const Search = () => {
                 </Grid>
             </div>
             {error && <Alert variant="outlined" severity="error" onClose={() => { setError(false) }}>{errorMessage}</Alert>}
-            <Button color="primary" disabled={!data} type="button" onClick={selectChart} endIcon={<EqualizerIcon></EqualizerIcon>}>
-                Bar Chart
-            </Button>
-            <Button color="primary" disabled={!data} type="button" onClick={selectTable} endIcon={<TableChartIcon></TableChartIcon>}>
-                Table Results
-            </Button>
+            <div>
+                <Button color="primary" disabled={!data} type="button" onClick={selectChart} endIcon={<EqualizerIcon></EqualizerIcon>}>
+                    Bar Chart
+                </Button>
+                <Button color="primary" disabled={!data} type="button" onClick={selectTable} endIcon={<TableChartIcon></TableChartIcon>}>
+                    Table Results
+                </Button>
+            </div>
 
 
             <Backdrop className={classes.backdrop} open={open}>
@@ -204,7 +203,7 @@ const Search = () => {
                 <Typography className={classes.message} variant='h5'>Start Searching for products!</Typography>
 
             }
-            {data && chart && <div><BarChart data={data} /></div>}
+            {data && chart && <BarChart data={data} />}
             {/* { data && table && <TableResult data={data} />} */}
             { data && table && <TableSort data={data} country={country} />}
 

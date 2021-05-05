@@ -27,8 +27,22 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         fire.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user)
-            setPending(false)
+            // alert(JSON.stringify(user.emailVerified));
+            if (user == null) {
+                setCurrentUser(null)
+                setPending(false)
+            } else {
+                if (user.emailVerified) {
+                    setCurrentUser(user)
+                    setPending(false)
+                } else {
+
+                    setCurrentUser(null)
+                    setPending(false)
+                }
+
+            }
+
         });
     }, []);
 

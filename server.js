@@ -87,9 +87,9 @@ async function getReviews(product, country) {
 
     try {
         var reviewsResponse = await axios.request(options)
-        console.log(reviewsResponse)
+        // console.log(reviewsResponse)
         var reviewsArray = reviewsResponse.data.reviews
-        // console.log(reviewsResponse.data.reviews)
+        console.log(reviewsResponse.data.reviews)
         for (var review of reviewsArray) {
             // var text = review.text;
             var text = review.review;
@@ -236,6 +236,8 @@ app.get('/api/reviewProduct', cors(), asyncHandler(async (req, res) => {
     axios.request(reviewsProduct).then(async function (result) {
 
         var reviews = result.data.reviews;
+
+        console.log(result.data)
 
         // for (var review of reviews) {
         //     console.log(review.review);

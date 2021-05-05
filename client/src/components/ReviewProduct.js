@@ -66,7 +66,12 @@ const ReviewProduct = () => {
         const asin = window.localStorage.getItem('asin');
         const country = window.localStorage.getItem('country');
         setAsin(asin)
-        setCountry(country)
+        if (country === null) {
+            setCountry('AU')
+        } else {
+            setCountry(country)
+        }
+
         setData(JSON.parse(reviewStorage));
     }, []);
 

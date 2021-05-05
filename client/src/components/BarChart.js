@@ -5,8 +5,8 @@ const useStyles = makeStyles((theme) => ({
 
 
     center: {
-        position: 'absolute', left: '57%', top: '60%',
-        transform: 'translate(-50%, -50%)'
+        position: 'fixed',
+        marginLeft: "150px",
     },
 }));
 const BarChart = (props) => {
@@ -38,22 +38,21 @@ const BarChart = (props) => {
                             label: 'Sentiment Review',
                             data: predictions,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
 
                             ],
                             borderColor: [
-                                'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
                             ],
                             borderWidth: 1,
                         }
                     ]
                 }}
-                height={500}
-                width={1000}
+                height={450}
+                width={900}
                 options={{
-                    // maintainAspectRatio: false,
                     responsive: true,
                     scales: {
                         yAxes: [

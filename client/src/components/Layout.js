@@ -9,6 +9,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import InfoIcon from '@material-ui/icons/Info';
 import { useHistory, useLocation } from 'react-router';
+import Paper from '@material-ui/core/Paper';
 
 
 const drawerWidth = 240;
@@ -28,6 +29,10 @@ const useStyles = makeStyles({
     },
     active: {
         background: '#f4f4f4'
+    },
+    logo: {
+        width: '200px',
+        height: '200px'
     }
 });
 
@@ -41,6 +46,7 @@ export const Layout = ({ children }) => {
         localStorage.removeItem('searchData');
         localStorage.removeItem('reviewData');
         localStorage.removeItem('asin');
+        localStorage.removeItem('email');
 
     }
 
@@ -74,9 +80,8 @@ export const Layout = ({ children }) => {
                 anchor="left"
                 classes={{ paper: classes.drawerPaper }}
             >
-                <div>
-                    <Typography style={{ marginLeft: 10 }} variant="h5">Amazon Sentiment</Typography>
-                </div>
+
+                <img src="/images/Amazon Sentiment.png" height="50" />
                 <List>
                     {menuItems.map(item => (
                         <ListItem

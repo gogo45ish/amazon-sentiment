@@ -2,13 +2,11 @@ import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import fire from "../fire";
 import { AuthContext } from "../Auth";
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -34,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    logo: {
+        marginBottom: '30px'
+    }
 }));
 
 const Login = ({ history }) => {
@@ -52,9 +53,16 @@ const Login = ({ history }) => {
             try {
                 setEmailError(null);
                 setPasswordError(null);
-                await fire
+                var user = await fire
                     .auth()
                     .signInWithEmailAndPassword(email, password);
+
+                window.localStorage.setItem('email', email);
+
+                if (!user.emailVerified) {
+                    window.location.reload(false);
+                }
+
 
 
                 history.push("/");
@@ -94,6 +102,8 @@ const Login = ({ history }) => {
         firebase.auth()
             .signInWithPopup(provider)
             .then((result) => {
+                window.localStorage.setItem('email', result.user.email)
+
             }).catch((error) => {
                 alert(error)
             });
@@ -112,12 +122,12 @@ const Login = ({ history }) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                <div className={classes.logo}>
+                    <img src="/images/Amazon Sentiment.png" height="50" />
+                </div>
                 <Typography component="h1" variant="h5">
                     Log In
-        </Typography>
+                </Typography>
                 <form onSubmit={handleLogin} className={classes.form}>
                     <TextField
                         error={emailError}

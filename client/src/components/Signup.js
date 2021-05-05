@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    logo: {
+        marginBottom: '30px'
+    }
 }));
 
 const SignUp = ({ history }) => {
@@ -42,10 +45,15 @@ const SignUp = ({ history }) => {
         event.preventDefault();
         const { email, password } = event.target.elements;
         try {
-            await fire
+            const newUser = await fire
                 .auth()
                 .createUserWithEmailAndPassword(email.value, password.value);
-            history.push("/");
+
+            await newUser.user.sendEmailVerification();
+            fire.auth().signOut();
+
+            history.push("/verify");
+
         } catch (error) {
             switch (error.code) {
                 case "auth/invalid-email":
@@ -72,12 +80,12 @@ const SignUp = ({ history }) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                <div className={classes.logo}>
+                    <img src="/images/Amazon Sentiment.png" height="50" />
+                </div>
                 <Typography component="h1" variant="h5">
                     Sign up
-          </Typography>
+                 </Typography>
                 <form onSubmit={handleSignUp} className={classes.form}>
                     <Grid container spacing={2}>
 

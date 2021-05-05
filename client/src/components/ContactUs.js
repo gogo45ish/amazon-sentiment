@@ -1,8 +1,10 @@
 import React from 'react'
 import { Typography, makeStyles, TextField, Button } from '@material-ui/core'
 import emailjs from 'emailjs-com'
+import { useState } from 'react';
 
-const useStyles = makeStyles({
+
+const useStyles = makeStyles((theme) => ({
     content: {
         marginTop: "50px",
     },
@@ -10,16 +12,38 @@ const useStyles = makeStyles({
         marginBottom: '40px'
     },
     form: {
-        paddingLeft: "300px",
-        paddingRight: "300px"
+
+
+        [theme.breakpoints.down("xs")]: {
+
+            paddingLeft: "50px",
+            paddingRight: "50px",
+        },
+        [theme.breakpoints.up("sm")]: {
+
+            paddingLeft: "50px",
+            paddingRight: "50px",
+        },
+        [theme.breakpoints.up("md")]: {
+
+            paddingLeft: "150px",
+            paddingRight: "150px",
+        },
+        [theme.breakpoints.up("lg")]: {
+
+            paddingLeft: "300px",
+            paddingRight: "300px",
+        },
     },
     input: {
         marginBottom: '10px'
     },
-});
+}));
 
 const ContactUs = () => {
+    var localEmail = window.localStorage.getItem('email')
     const classes = useStyles();
+    const [email] = useState(localEmail)
 
     function sendEmail(e) {
         e.preventDefault();
@@ -45,19 +69,21 @@ const ContactUs = () => {
             <form className={classes.form} onSubmit={sendEmail}>
                 <TextField
                     className={classes.input}
-                    name="name"
-                    fullWidth
-                    id="outlined-basic"
-                    label="Name"
-                    variant="outlined"
-                    required />
-                <TextField
-                    className={classes.input}
                     name="email"
                     autoComplete="email"
                     fullWidth
                     id="outlined-basic"
                     label="Email"
+                    variant="outlined"
+                    value={email}
+                    disabled
+                    required />
+                <TextField
+                    className={classes.input}
+                    name="name"
+                    fullWidth
+                    id="outlined-basic"
+                    label="Name"
                     variant="outlined"
                     required />
                 <TextField
