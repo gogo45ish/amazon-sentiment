@@ -6,7 +6,6 @@ const { Tokenizer } = require("tf_node_tokenizer");
 const csv = require('csvtojson');
 const axios = require('axios').default;
 const asyncHandler = require('express-async-handler')
-var reviewsCrawler = require('amazon-reviews-crawler')
 var emojiStrip = require('emoji-strip');
 require('dotenv').config();
 
@@ -409,4 +408,4 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
 
 const port = 5000;
 
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(process.env.PORT || port, () => `Server running on port ${port}`);
