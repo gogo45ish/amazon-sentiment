@@ -124,7 +124,8 @@ const ReviewProduct = () => {
 
     const clickSearch = () => {
 
-        var url = 'https://amazon-sent.herokuapp.com/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
+        // var url = 'https://amazon-sent.herokuapp.com/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
+        var url = 'http://localhost:5000/api/reviewProduct?asin=' + asin + '&country=' + country + '&top=' + top;
         setUrl(url);
         window.localStorage.removeItem('asin')
         setOpen(!open);

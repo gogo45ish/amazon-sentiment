@@ -117,7 +117,8 @@ const Search = () => {
         setChartSelected(false);
     }
     const clickSearch = () => {
-        var url = 'https://amazon-sent.herokuapp.com/api/chart3?keywords=' + keywords + '&country=' + country;
+        // var url = 'https://amazon-sent.herokuapp.com/api/chart3?keywords=' + keywords + '&country=' + country;
+        var url = 'http://localhost:5000/api/chart3?keywords=' + keywords + '&country=' + country;
         // var url = 'http://localhost:5000/api/test'
         setUrl(url)
         setOpen(!open);

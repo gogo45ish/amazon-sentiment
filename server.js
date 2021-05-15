@@ -297,7 +297,9 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
     };
 
     axios.request(search).then(async function (result) {
-        var products = result.data.products;
+        var requestProducts = result.data.products;
+
+        var products = requestProducts.slice(0, 5);
         console.log('************')
         console.log(products.length)
         console.log('************')
@@ -373,7 +375,7 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
             console.log(error);
         }
         var response = {
-            products: result.data.products,
+            products: products,
             predictions: predictions,
             avgPrice: Math.round(avgPrice),
             avgRating: Math.round(avgRating),
@@ -418,6 +420,6 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 app.listen(port, () => `Server running on port ${port}`);
