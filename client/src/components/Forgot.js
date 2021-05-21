@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import fire from "../fire";
 import { AuthContext } from "../Auth";
@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -35,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Forgot = ({ history }) => {
     const classes = useStyles();
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const handleForgot = useCallback(
         async event => {
             event.preventDefault();
@@ -45,13 +49,15 @@ const Forgot = ({ history }) => {
                     .sendPasswordResetEmail(email.value);
                 history.push("/login");
             } catch (error) {
-                alert(error);
+                setErrorMessage(error.message)
+                setError(true);
             }
         },
         [history]
     );
 
     const { currentUser } = useContext(AuthContext);
+
 
     if (currentUser) {
         return <Redirect to="/" />;
@@ -79,6 +85,12 @@ const Forgot = ({ history }) => {
                         autoComplete="email"
                         autoFocus
                     />
+                    {error &&
+                        <Alert
+                            variant="outlined"
+                            severity="error"
+                            onClose={() => { setError(false) }}>{errorMessage}
+                        </Alert>}
 
                     <Button
                         type="submit"

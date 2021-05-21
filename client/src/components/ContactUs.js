@@ -2,6 +2,8 @@ import React from 'react'
 import { Typography, makeStyles, TextField, Button } from '@material-ui/core'
 import emailjs from 'emailjs-com'
 import { useState } from 'react';
+import Alert from '@material-ui/lab/Alert';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,20 +40,27 @@ const useStyles = makeStyles((theme) => ({
     input: {
         marginBottom: '10px'
     },
+    alert: {
+        marginBottom: '10px'
+    },
 }));
 
 const ContactUs = () => {
     var localEmail = window.localStorage.getItem('email')
     const classes = useStyles();
-    const [email] = useState(localEmail)
+    const [email] = useState(localEmail);
+    const [message, setMessage] = useState(false);
+    const [messageContent] = useState("Your submission was successful!");
+
+
 
     function sendEmail(e) {
         e.preventDefault();
 
         emailjs.sendForm('service_yi8rxnv', 'template_6p9ev9k', e.target, 'user_PuIaGaCRy94irht2x2Wl9')
             .then(result => {
-                console.log(result.text);
-                alert("Your submission was successful!")
+
+                setMessage(true);
             }).catch(error => {
                 console.log(error.text);
             })
@@ -66,7 +75,17 @@ const ContactUs = () => {
                 Contact Us
             </Typography>
 
+
+
             <form className={classes.form} onSubmit={sendEmail}>
+                {message &&
+                    <Alert
+                        className={classes.alert}
+                        variant="outlined"
+                        severity="success"
+                        onClose={() => { setMessage(false) }}>{messageContent}
+                    </Alert>}
+
                 <TextField
                     className={classes.input}
                     name="email"

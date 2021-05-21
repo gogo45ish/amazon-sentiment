@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import firebase from 'firebase';
 import { GoogleLoginButton } from "react-social-login-buttons";
+import Alert from '@material-ui/lab/Alert';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +45,8 @@ const Login = ({ history }) => {
     const [passwordError, setPasswordError] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = useCallback(
 
@@ -71,19 +75,23 @@ const Login = ({ history }) => {
                 // alert(error.code);
                 switch (error.code) {
                     case "auth/invalid-email":
-                        alert(error.message);
+                        setErrorMessage(error.message)
+                        setError(true);
                         setEmailError(true);
                         break;
                     case "auth/wrong-password":
-                        alert(error.message);
+                        setErrorMessage(error.message)
+                        setError(true);
                         setPasswordError(true);
                         break;
                     case "auth/user-not-found":
-                        alert(error.message);
+                        setErrorMessage(error.message)
+                        setError(true);
                         setEmailError(true);
                         break;
                     case "auth/too-many-requests":
-                        alert(error.message);
+                        setErrorMessage(error.message)
+                        setError(true);
                         break;
                     default:
                     // code block
@@ -157,6 +165,13 @@ const Login = ({ history }) => {
                         value={password}
                         onChange={handlePassword}
                     />
+                    {error &&
+                        <Alert
+                            variant="outlined"
+                            severity="error"
+                            onClose={() => { setError(false) }}>{errorMessage}
+                        </Alert>}
+
 
                     <Button
                         id='loginB'

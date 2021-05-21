@@ -72,7 +72,8 @@ async function getReviews(product, country) {
         headers: {
             'x-rapidapi-key': rapidkey,
             'x-rapidapi-host': rapidhost
-        }
+        },
+        timeout: 5000
     };
 
 
@@ -297,9 +298,9 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
     };
 
     axios.request(search).then(async function (result) {
-        var requestProducts = result.data.products;
+        // var products = result.data.products;
 
-        var products = requestProducts.slice(0, 5);
+        var products = requestProducts.slice(0, 10);
         console.log('************')
         console.log(products.length)
         console.log('************')

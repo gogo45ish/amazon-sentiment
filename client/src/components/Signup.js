@@ -11,6 +11,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -40,6 +42,8 @@ const SignUp = ({ history }) => {
     const [passwordError, setPasswordError] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
@@ -57,15 +61,25 @@ const SignUp = ({ history }) => {
         } catch (error) {
             switch (error.code) {
                 case "auth/invalid-email":
-                    alert(error.message);
+                    setErrorMessage(error.message)
+                    setError(true);
                     setEmailError(true);
                     break;
                 case "auth/weak-password":
-                    alert(error.message);
+                    setErrorMessage(error.message)
+                    setError(true);
+                    setPasswordError(true);
+                    break;
+                case "auth/email-already-in-use":
+                    setErrorMessage(error.message)
+                    setError(true);
                     setPasswordError(true);
                     break;
                 default:
             }
+
+
+            // alert(error.code);
         }
     }, [history]);
 
@@ -119,6 +133,15 @@ const SignUp = ({ history }) => {
                                 onChange={handlePassword}
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            {error &&
+                                <Alert
+                                    variant="outlined"
+                                    severity="error"
+                                    onClose={() => { setError(false) }}>{errorMessage}
+                                </Alert>}
+                        </Grid>
+
 
                     </Grid>
                     <Button
