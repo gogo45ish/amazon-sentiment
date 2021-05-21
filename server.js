@@ -73,7 +73,7 @@ async function getReviews(product, country) {
             'x-rapidapi-key': rapidkey,
             'x-rapidapi-host': rapidhost
         },
-        timeout: 5000
+        timeout: 2000
     };
 
 
@@ -230,7 +230,8 @@ app.get('/api/reviewProduct', cors(), asyncHandler(async (req, res) => {
         headers: {
             'x-rapidapi-key': rapidkey,
             'x-rapidapi-host': rapidhost
-        }
+        },
+        timeout: 2000
     };
 
     axios.request(reviewsProduct).then(async function (result) {
@@ -280,7 +281,7 @@ app.get('/api/reviewProduct', cors(), asyncHandler(async (req, res) => {
 
 }));
 
-app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
+app.get('/api/searchProducts', cors(), asyncHandler(async (req, res) => {
 
     var keywords = req.query.keywords;
     var country = req.query.country;

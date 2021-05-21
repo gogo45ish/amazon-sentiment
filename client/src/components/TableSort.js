@@ -129,6 +129,17 @@ const useStyles = makeStyles((theme) => ({
         top: 20,
         width: 1,
     },
+    btn: {
+        '&:hover': {
+            backgroundColor: '#ff914d',
+            color: '#000000',
+        },
+    },
+    image: {
+        '&:hover': {
+            backgroundColor: '#ff914d',
+        },
+    }
 }));
 
 export default function EnhancedTable(props) {
@@ -204,9 +215,13 @@ export default function EnhancedTable(props) {
                                                 {row.title}
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button variant="contained" color="secondary" onClick={() => {
-                                                    reviewAsin(row.asin, country)
-                                                }}>
+                                                <Button
+                                                    variant="contained"
+                                                    color="secondary"
+                                                    className={classes.btn}
+                                                    onClick={() => {
+                                                        reviewAsin(row.asin, country)
+                                                    }}>
                                                     {row.asin}
                                                 </Button>
                                             </TableCell>
@@ -218,7 +233,7 @@ export default function EnhancedTable(props) {
                                             <TableCell align="right">{row.bestSeller ? (<Typography>Yes</Typography>) : (<Typography>No</Typography>)}</TableCell>
                                             <TableCell align="right">{row.sponsored ? (<Typography>Yes</Typography>) : (<Typography>No</Typography>)}</TableCell>
                                             <TableCell align="right">{
-                                                <a href={row.url} rel="noopener noreferrer" target="_blank">
+                                                <a className={classes.image} href={row.url} rel="noopener noreferrer" target="_blank">
                                                     <img src={row.thumbnail} alt="" width="50" height="80" />
                                                 </a>
                                             }</TableCell>

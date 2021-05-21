@@ -11,6 +11,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Button, Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Popover from '@material-ui/core/Popover';
+import HelpIcon from '@material-ui/icons/Help';
 const useStyles = makeStyles((theme) => ({
 
     content: {
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    typography: {
+        padding: theme.spacing(2),
+    },
 }));
 
 
@@ -45,10 +50,10 @@ const Search = () => {
 
     const classes = useStyles();
 
-
+    const [anchorEl, setAnchorEl] = useState(null);
     const [data, setData] = useState(null);
     const [keywords, setKeywords] = useState('');
-    const [country, setCountry] = useState('AU');
+    const [country, setCountry] = useState('US');
     const [url, setUrl] = useState('');
     const [chart, setChartSelected] = useState(true);
     const [table, setTableSelected] = useState(false);
@@ -117,8 +122,8 @@ const Search = () => {
         setChartSelected(false);
     }
     const clickSearch = () => {
-        var url = 'https://amazon-sent.herokuapp.com/api/chart3?keywords=' + keywords + '&country=' + country;
-        // var url = 'http://localhost:5000/api/chart3?keywords=' + keywords + '&country=' + country;
+        var url = 'https://amazon-sent.herokuapp.com/api/searchProducts?keywords=' + keywords + '&country=' + country;
+        // var url = 'http://localhost:5000/api/searchProducts?keywords=' + keywords + '&country=' + country;
         // var url = 'http://localhost:5000/api/test'
         setUrl(url)
         setOpen(!open);
@@ -126,14 +131,17 @@ const Search = () => {
         window.localStorage.setItem('keywords', keywords)
         window.localStorage.setItem('countrySearched', country)
 
-
-
-
-
-
     }
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
+    const open1 = Boolean(anchorEl);
+    const id = open1 ? 'simple-popover' : undefined;
 
     return (
 
@@ -181,6 +189,28 @@ const Search = () => {
                                 <MenuItem value={"IT"}>Italy</MenuItem>
                             </Select>
                         </FormControl>
+                    </Grid>
+                    <Grid item>
+                        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                            <HelpIcon />
+                        </IconButton>
+                        <Popover
+                            id={id}
+                            open={open1}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <Typography className={classes.typography}>Search for any products with keywords. The more
+                keywords you provide the more specific you are.</Typography>
+                        </Popover>
                     </Grid>
                 </Grid>
             </div>

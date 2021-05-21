@@ -2,14 +2,12 @@ import { List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@materia
 import React from 'react';
 import fire from "../fire"
 import Drawer from '@material-ui/core/Drawer';
-import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import RateReviewIcon from '@material-ui/icons/RateReview';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import InfoIcon from '@material-ui/icons/Info';
 import { useHistory, useLocation } from 'react-router';
-import Paper from '@material-ui/core/Paper';
 
 
 const drawerWidth = 240;
@@ -47,6 +45,9 @@ export const Layout = ({ children }) => {
         localStorage.removeItem('reviewData');
         localStorage.removeItem('asin');
         localStorage.removeItem('email');
+        localStorage.removeItem('countrySearched');
+        localStorage.removeItem('country');
+        localStorage.removeItem('keywords');
 
     }
 
@@ -81,7 +82,7 @@ export const Layout = ({ children }) => {
                 classes={{ paper: classes.drawerPaper }}
             >
 
-                <img src="/images/Amazon Sentiment.png" height="50" />
+                <img alt="logo" src="/images/Amazon Sentiment.png" height="50" />
                 <List>
                     {menuItems.map(item => (
                         <ListItem

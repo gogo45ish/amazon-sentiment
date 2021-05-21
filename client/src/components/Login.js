@@ -131,7 +131,7 @@ const Login = ({ history }) => {
             <CssBaseline />
             <div className={classes.paper}>
                 <div className={classes.logo}>
-                    <img src="/images/Amazon Sentiment.png" height="50" />
+                    <img alt="logo" src="/images/Amazon Sentiment.png" height="50" />
                 </div>
                 <Typography component="h1" variant="h5">
                     Log In

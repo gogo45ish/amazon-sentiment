@@ -7,6 +7,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Grid, TextField, IconButton, Select, FormControl, MenuItem, InputLabel, Typography } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
+import HelpIcon from '@material-ui/icons/Help';
+import Popover from '@material-ui/core/Popover';
 import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
 
@@ -38,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    typography: {
+        padding: theme.spacing(2),
+    },
 }));
 
 
@@ -47,10 +52,11 @@ const ReviewProduct = () => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const [data, setData] = useState(null);
     const [asin, setAsin] = useState('');
-    const [country, setCountry] = useState('AU');
+    const [country, setCountry] = useState('US');
     const [top, setTop] = useState('0');
     const [url, setUrl] = useState('');
     const [error, setError] = useState(false);
@@ -67,7 +73,7 @@ const ReviewProduct = () => {
         const country = window.localStorage.getItem('country');
         setAsin(asin)
         if (country === null) {
-            setCountry('AU')
+            setCountry('US')
         } else {
             setCountry(country)
         }
@@ -131,8 +137,16 @@ const ReviewProduct = () => {
         setOpen(!open);
 
     }
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
+    const open1 = Boolean(anchorEl);
+    const id = open1 ? 'simple-popover' : undefined;
 
     return (
 
@@ -197,6 +211,28 @@ const ReviewProduct = () => {
                             </Select>
                         </FormControl>
                     </Grid>
+                    <Grid item>
+                        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                            <HelpIcon />
+                        </IconButton>
+                        <Popover
+                            id={id}
+                            open={open1}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <Typography className={classes.typography}>Enter the asin number of your product or head over to the
+                            table of searched products and click on any asin number to get reviews.</Typography>
+                        </Popover>
+                    </Grid>
                 </Grid>
             </div>
 
@@ -207,7 +243,7 @@ const ReviewProduct = () => {
             </Backdrop>
             {!data && message &&
 
-                <Typography className={classes.message} variant='h5'>Start Searching for products!</Typography>
+                <Typography className={classes.message} variant='h5'>Start Searching for reviews!</Typography>
 
             }
             {data && <Cards data={data} />}
