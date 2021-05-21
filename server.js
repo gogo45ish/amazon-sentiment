@@ -298,7 +298,7 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
     };
 
     axios.request(search).then(async function (result) {
-        // var products = result.data.products;
+        var requestProducts = result.data.products;
 
         var products = requestProducts.slice(0, 10);
         console.log('************')
@@ -402,7 +402,7 @@ app.get('/api/chart3', cors(), asyncHandler(async (req, res) => {
             };
         }
 
-        console.error(error.response.status);
+        // console.error(error);
         res.send(response);
     });
 
