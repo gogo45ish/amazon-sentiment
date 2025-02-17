@@ -42,4 +42,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For inquiries or feedback, please reach out to [your email/contact info].
+For inquiries or feedback, please reach out to [george.zummar.z@gmail.com].
