@@ -5,7 +5,7 @@ This project performs sentiment analysis on Amazon product data using a Hugging 
 ## Live Demo
 
 - **Frontend**: [amazon-react-self.vercel.app](https://amazon-react-self.vercel.app)
-- **Backend**: [amazon-server-three.vercel.app] (https://amazon-server-three.vercel.app)
+- **Backend**: [amazon-server-three.vercel.app](https://amazon-server-three.vercel.app)
 
 ## Tech Stack
 
