@@ -20,7 +20,6 @@ This project performs sentiment analysis on Amazon product data using a Hugging 
 - **Live Data:** Retrieve product information based on a keyword or ASIN from a hosted PostgreSQL database.
 - **Sentiment Analysis:** Analyze product reviews using a Hugging Face model.
 - **Intuitive Interface:** A user-friendly interface for quick and efficient product search and review analysis.
-- **Scalable & Fast:** Built with modern technologies for a robust and performant user experience.
 
 ## How to Use
 
